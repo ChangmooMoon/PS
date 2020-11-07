@@ -1,19 +1,36 @@
 #include <iostream>
 #include <stack>
+#include <string>
 
 using namespace std;
 
-int main(){
-  cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+bool solve(string str){
+  stack<bool> s;
+  
+  for(int i = 0; i<str.length(); i++){
+    if(str[i] == '('){
+      s.push(true);
+    } else {
+      if(!s.empty()){
+        s.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+  return s.empty();
+}
 
+int main(){
   int T;
   cin >> T;
-  cin.ignore();
-
   while(T--){
-    string str = getline();
-    cout << str << endl;
-  }
+    string s;
+    cin >> s;
+    if(solve(s)) cout << "YES";
+    else cout << "NO";
 
+    cout << "\n";
+  }
   return 0;
 }
