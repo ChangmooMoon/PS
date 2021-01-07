@@ -4,7 +4,7 @@ using namespace std;
 
 double get_optimal_value(int capacity, vector<int> weights, vector<int> values) {
     double value = 0.0;
-
+    
     return value;
 }
 
@@ -14,7 +14,7 @@ int main() {
     cin >> n >> capacity;
     vector<int> values(n);
     vector<int> weights(n);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         cin >> values[i] >> weights[i];
     }
 
