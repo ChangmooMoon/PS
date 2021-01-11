@@ -1,5 +1,5 @@
-N = int(input())
-coins = list(map(int, input().split()))
+# N = int(input())
+# coins = list(map(int, input().split()))
 N = 5
 coins = [3, 2, 1, 1, 9]
 
