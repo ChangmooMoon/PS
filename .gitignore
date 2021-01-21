@@ -5,3 +5,5 @@ output.txt
 .vscode
 datastructure/
 boj/.cph
+*.bin
+*.out
