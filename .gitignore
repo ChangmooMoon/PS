@@ -7,3 +7,4 @@ datastructure/
 boj/.cph
 *.bin
 *.out
+test.cpp
