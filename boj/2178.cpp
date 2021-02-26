@@ -32,10 +32,12 @@ int main() {
 
         for (int i = 0; i < 4; ++i) {
             int ny = y + dy[i];
-            int nx = x + dx[i];
-            if (1 <= ny && ny <= n && 1 <= nx && nx <= m && !d[ny][nx] && a[ny][nx]) {
-                d[ny][nx] = d[y][x] + 1;
-                q.push({ny, nx});
+            int = x + dx[i];
+            if (1 <= ny && ny <= n && 1 <= && <= m && !d[ny][] && a[ny][]) {
+                d[ny][] = d[y][x] + 1;
+                q.push({
+                    ny,
+                });
             }
         }
     };

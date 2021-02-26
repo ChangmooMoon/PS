@@ -1,11 +1,28 @@
 #include <iostream>
-
+#include <string>
+#include <unordered_set>
 using namespace std;
 
-int main(){
-    cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int solution(string s) {  // 문자열 1000000
+    unordered_set<char> cSet;
 
-    cout << false << endl; 
+    for (int i = 0; i < s.length(); ++i) {
+        if (!cSet.empty()) {
+            if (s[i] == *(cSet.begin())) {
+                cSet.erase(cSet.begin());
+            } else {
+                cSet.insert(s[i]);
+            }
+        } else {
+            cSet.insert(s[i]);
+        }
+    }
 
+    return cSet.empty() ? 1 : 0;
+}
+
+int main() {
+    string s = "baabaa";
+    solution(s);
     return 0;
 }
