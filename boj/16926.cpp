@@ -1,22 +1,33 @@
 #include <algorithm>
-#include <bitset>
-#include <cstdlib>
 #include <iostream>
-#include <iterator>
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
-
 
 using namespace std;
-#define ll long long
-#define ull unsigned long long
-int main(){
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
 
+int n, m, r;
+int a[300][300];
 
-  return 0;
+void rotate(int n) {
+  while(n--) {
+    
+  }
 }
 
+int main() {
+    cin >> n >> m >> r;
+    r %= 4;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cin >> a[i][j];
+        }
+    }
+
+    rotate(r);
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cout << a[i][j] << ' ';
+        }
+        cout << '\n';
+    }
+}
