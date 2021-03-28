@@ -1,35 +1,65 @@
-#include <algorithm>
-#include <cstring>
 #include <iostream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
-struct Trie {
-    bool finish;
-    Trie* next[26];
-    Trie() : finish(false) {
-        memset(next, 0, sizeof(next));
+struct Tries {
+    struct Node {
+        int child[26];
+        bool valid;
+
+        Node() {
+            for (int i = 0; i < 26; ++i) {
+                child[i] = -1;
+            }
+            valid = false;
+        }
+    };
+
+    vector<Node> trie;
+    int root;
+    int init() {
+        Node x;
+        trie.push_back(x);
+        return (int)trie.size() - 1;
     }
 
-    void insert(const char* key) {
-        if ((*key) == '\0') {
-            finish = true;
+    Tries() {
+        root = init();
+    }
+
+    void add(int node, string& s, int index) {
+        if (index == s.size()) {
+            trie[node].valid = true;
             return;
-        };
-        int curr = (*key) - 'a';
-        if (!next[curr])
-            next[curr] = new Trie();
-        next[curr]->insert(key + 1);
+        }
+
+        int c = s[index] - 'a';
+        if (trie[node].child[c] == -1) {
+            int next = init();
+            trie[node].child[c] = next;
+        }
+
+        int child = trie[node].child[c];
+        add(child, s, index + 1);
     }
 
-    bool find(const char* key) {
-        if ((*key) == '\0')
-            return true;
-        int curr = (*key) - 'a';
-        if (!next[curr])
-            return false;
-        return next[curr]->find(key + 1);
+    void add(string& s) {
+        add(root, s, 0);
+    }
+
+    bool search(int node, string& s, int index) {
+        if (node == -1) return false;
+        if (index == s.length()) return true;
+
+        int c = s[index] - 'a';
+        int child = trie[node].child[c];
+        return search(child, s, index + 1);
+    }
+
+    bool search(string& s) {
+        return search(root, s, 0);
     }
 };
+
+int main() 
