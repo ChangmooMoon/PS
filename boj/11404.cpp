@@ -1,10 +1,10 @@
-#include <algorithm>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define INF 987654321
 
-int n, m;         // 100, 100000
-int d[101][101];  // 100000
+int n, m;
+int a[101][101];
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -12,30 +12,37 @@ int main() {
     cout.tie(nullptr);
 
     cin >> n >> m;
-    for (int i = 0; i < m; ++i) {
-        int u, v, c;
-        cin >> u >> v >> c;
-
-        if (!d[u][v])
-            d[u][v] = c;
-        else
-            d[u][v] = min(d[u][v], c);  // 모든 노드간 최단경로비용
-    }
-
-    for (int w = 1; w <= n; ++w) {
-        for (int u = 1; u <= n; ++u) {
-            for (int v = 1; v <= n; ++v) {
-                if (!d[u][w] || !d[w][v] || u == v) continue;
-                if (!d[u][v] || d[u][w] + d[w][v] < d[u][v]) {  //
-                    d[u][v] = d[u][w] + d[w][v];
-                }
-            }
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (i == j)
+                a[i][j] = 0;
+            else
+                a[i][j] = INF;
         }
     }
 
+    for (int i = 0; i < m; ++i) {
+        int x, y, weight;
+        cin >> x >> y >> weight;
+        if (a[x][y] > weight) {
+            a[x][y] = weight;
+        }
+    }  // 인접행렬 초기화
+
+    for (int k = 1; k <= n; ++k) {
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (a[i][j] > a[i][k] + a[k][j]) {
+                    a[i][j] = a[i][k] + a[k][j];
+                }
+            }
+        }
+    }  // 최단경로 연산
+
     for (int i = 1; i <= n; ++i) {
         for (int j = 1; j <= n; ++j) {
-            cout << d[i][j] << ' ';
+            if (a[i][j] == INF) a[i][j] = 0;
+            cout << a[i][j] << ' ';
         }
         cout << '\n';
     }
