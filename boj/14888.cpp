@@ -18,14 +18,14 @@ int main() {
         cin >> a[i];
     }
     cin >> op[0] >> op[1] >> op[2] >> op[3];
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i) {  // 0,1,2,3 + - * /
         for (int j = 0; j < op[i]; ++j) {
             permu.push_back(i);
         }
     }
 
-    int min_ans = 1'000'000'000;
-    int max_ans = -1'000'000'000;
+    int min_ans = 1e9;
+    int max_ans = -1e9;
     do {
         int first = a[0];
         for (int i = 0; i < n - 1; ++i) {
