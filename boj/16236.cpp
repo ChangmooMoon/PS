@@ -1,16 +1,66 @@
-#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <queue>
-#define INF 987654321
-
+#define size _size
 using namespace std;
 
-int dx[] = {0, 1, 0, -1};
-int dy[] = {1, 0, -1, 0};
+const int dx[4] = {1, 0, -1, 0};
+const int dy[4] = {0, 1, 0, -1};
 
-int n;
+// 1. d 오름차순, 2. 행 오름차순 // 3. 열 오름차순
+struct Baby {
+    int x, y, d;
+    bool operator<(const Baby& other) const {
+        if (d == other.d) {
+            if (x == other.x) return y > other.y;
+            return x > other.x;
+        }
+        return d > other.d;
+    }
+};
+
+int n, size = 2, exp = 0, ans = 0;
 int a[20][20];
-int visit[20][20];
+int check[20][20];
+priority_queue<Baby> pq;
+
+void bfs() {
+    while (!pq.empty()) {
+        int x, y, d;
+        x = pq.top().x;
+        y = pq.top().y;
+        d = pq.top().d;
+        pq.pop();
+
+        // 먹이랑 겹쳐진 상태
+        if (a[x][y] > 0 && a[x][y] < size) {
+            a[x][y] = 0;
+            exp++;
+            if (exp == size) {
+                size++;
+                exp = 0;
+            }
+            ans += d;
+
+            memset(check, false, sizeof(check));
+            d = 0;
+            while (!pq.empty()) {
+                pq.pop();
+            }
+        }
+
+        for (int i = 0; i < 4; ++i) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (0 > nx || 0 > ny || n <= nx || n <= ny) continue;
+            if (check[nx][ny]) continue;
+            if (a[nx][ny] > 0 && a[nx][ny] > size) continue;
+
+            pq.push({nx, ny, d + 1});
+            check[nx][ny] = true;
+        }
+    }
+}
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -18,35 +68,18 @@ int main() {
     cout.tie(nullptr);
 
     cin >> n;
-    int x, y;
-
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             cin >> a[i][j];
             if (a[i][j] == 9) {
-                x = i;
-                y = j;
+                pq.push({i, j, 0});
                 a[i][j] = 0;
             }
         }
     }
 
-    int time = 0;
-    int size = 2;
-    int eat = 0;
-
-    while (true) {
-        int nx, ny, dist;
-        }
+    bfs();
+    cout << ans;
 
     return 0;
 }
-
-// 아기상어 시작크기 = 2
-// 자신의 크기보다 작은 물고기만 먹는다
-// 크기가 큰 물고기칸은 못지나감
-// 크기가 같은 물고기칸은 지나감
-// 거리가 가장 가까운 물고기부터 먹는다
-// 동점일 시 가장 위, 왼쪽부터 먹는다
-// 자신의 크기와 같은 수의 물고기 먹으면 크기 1증가
-// 공간 0,1,2,3,4,5,6 - 상어9
