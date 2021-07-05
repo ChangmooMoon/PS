@@ -1,51 +1,55 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
-vector<int> now(10);
-vector<int> target(10);
-int count = 0;
+int n;
 
-void toggle(int n){
-    now[n] = 1 - now[n];
-    ::count++;
+void toggle(vector<int>& v, int idx) {
+    for (int i = idx - 1; i <= idx + 1; ++i) {
+        if (0 <= i && i < n) v[i] = 1 - v[i];
+    }
 }
 
-int solve(int n){
-    int count = 0;
-    for(int i = 0; i<n; ++i){
-        if(now[i] != target[i]){
-            if(i-1 >= 0) toggle(i-1);
-            toggle(i);
-            if(i+1 <= n) toggle(i+1);
+int go(vector<int> v1, vector<int>& v2) {
+    int cnt = 0;
+    for (int i = 0; i < n - 1; ++i) {
+        if (v1[i] != v2[i]) {
+            toggle(v1, i + 1);
+            cnt++;
         }
     }
 
-    if(now != target) return -1;
-    return count;
+    if (v1 == v2) return cnt;
+    return -1;
 }
 
-int main(){
-    cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-    int N;
-    cin >> N;
-    cin.ignore();
-
+    cin >> n;
+    vector<int> a(n);
+    vector<int> b(n);
     string s;
-    getline(cin, s);
-    for(int i = 0; i<N; ++i){
-        now[i] = s[i] - '0';
+    cin >> s;
+    for (int i = 0; i < n; ++i) {
+        a[i] = s[i] - '0';
+    }
+    cin >> s;
+    for (int i = 0; i < n; ++i) {
+        b[i] = s[i] - '0';
     }
 
-    getline(cin, s);
-    for(int i = 0; i<N; ++i){
-        target[i] = s[i] - '0';
-    }
+    int t1 = go(a, b);
+    toggle(a, 0);
+    int t2 = go(a, b);
+    if (t2 != -1) t2++;
 
-    cout << solve(N) << endl;
-
+    if (t1 != -1 && t2 != -1)
+        cout << min(t1, t2);
+    else
+        cout << max(t1, t2);
     return 0;
 }

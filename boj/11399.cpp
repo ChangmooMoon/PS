@@ -1,28 +1,29 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
-
 using namespace std;
 
-int solve(vector<int>& v){
-    sort(v.begin(), v.end(), greater<>());
-    int result = 0;
-    for(size_t i = 0; i<v.size(); ++i){
-        result += (i+1) * v[i];
-    }
-    return result;
-}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-int main(){
-    cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-
-    int N;
-    cin >> N;
-    vector<int> v(N);
-    for(int i = 0; i<N; ++i){
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; ++i) {
         cin >> v[i];
     }
 
-    cout << solve(v) << endl;
+    sort(v.begin(), v.end());
+
+    int sum = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j <= i; ++j) {
+            sum += v[j];
+        }
+    }
+
+    cout << sum;
     return 0;
 }

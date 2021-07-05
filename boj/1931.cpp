@@ -1,41 +1,41 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
-
+#define pii pair<int, int>
 using namespace std;
 
-bool compare(pair<int,int>& u, pair<int,int>& v){
-    if(u.second == v.second){
-        return u.first < v.first;
+bool cmp(pii& a, pii& b) {  // 1. 끝 오름차순 2. 시작 오름차순
+    if (a.second == b.second) {
+        return a.first < b.first;
     }
-    return u.second < v.second; // 끝나는 시간 오름차순
- }
-
-int solve(vector<pair<int,int>>& v){
-    sort(v.begin(), v.end(), compare);
-
-    int axis = 0;
-    int result = 0;
-    for(size_t i = 0; i<v.size(); ++i){
-        if(axis <= v[i].first){
-            result++;
-            axis = v[i].second;
-        }
-    }
-    return result; 
+    return a.second < b.second;
 }
 
-int main(){
-    cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-    int N;
-    cin >> N;
-    vector<pair<int,int>> v(N);
-    for(int i = 0; i<N; i++){
-        int start, end;
-        cin >> start >> end;
-        v[i] = make_pair(start,end);
+    int n;
+    cin >> n;
+    vector<pii> v;
+    for (int i = 0; i < n; ++i) {
+        int x, y;
+        cin >> x >> y;
+        v.push_back({x, y});
     }
-    cout << solve(v) << endl;
+
+    sort(v.begin(), v.end(), cmp);
+
+    int cnt = 0;
+    int end = 0;
+    for (int i = 0; i < v.size(); ++i) {
+        if (end <= v[i].first) {
+            cnt++;
+            end = v[i].second;
+        }
+    }
+
+    cout << cnt;
     return 0;
 }
