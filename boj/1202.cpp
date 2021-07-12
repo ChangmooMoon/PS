@@ -29,7 +29,7 @@ int main() {
     priority_queue<int> pq;  // 비싼 보석가격 maxheap
     long long ans = 0;
 
-    int target = 0; // n*k = 900억
+    int target = 0;  // KlogN
     for (int i = 0; i < k; ++i) {
         while (target < n && jewel[target].first <= capa[i]) {
             pq.push(jewel[target].second);
