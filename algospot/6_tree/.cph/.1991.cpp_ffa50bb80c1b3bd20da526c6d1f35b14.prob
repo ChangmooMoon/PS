@@ -1,0 +1,1 @@
+{"name":"Local: 1991","url":"/Users/mcm/c/algospot/6_tree/1991.cpp","tests":[{"id":1626680265221,"input":"7\nA B C\nB D .\nC E F\nE . .\nF . G\nD . .\nG . .","output":"ABDCEFG\nDBAECFG\nDBEGFCA"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/algospot/6_tree/1991.cpp","group":"local","local":true}

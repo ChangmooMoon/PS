@@ -2,9 +2,31 @@
 #include <vector>
 using namespace std;
 
-// 프리오더: 루LR
-// 인오더: L루R
-// 포스트오더: LR루
+int in[100001];
+int post[100001];
+int idx[100001];
+
+// pre 루-왼-오
+// in 왼-루-오
+// post 왼-오-루
+
+// preorder 출력
+void print(int inStart, int postStart, int size) {
+    if (size == 0) return;
+    if (size == 1) {
+        cout << post[postStart] << ' ';
+        return;
+    }
+
+    int root = post[postStart + size - 1];  // post 마지막 노드가 inorder root
+    int rootIdx = idx[root];
+    int leftSize = rootIdx - inStart;
+    int rightSize = size - leftSize - 1;  // 전체 사이즈 - 왼쪽서브트리 - 루트 = 오른쪽서브트리
+
+    cout << root << ' ';
+    print(inStart, postStart, leftSize);
+    print(rootIdx + 1, postStart + leftSize, rightSize);
+}
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -13,18 +35,15 @@ int main() {
 
     int n;
     cin >> n;
-    vector<int> inorder(n);   // 1 2 3
-    vector<int> preorder(n);  // 1 3 2
+
     for (int i = 0; i < n; ++i) {
-        int val;
-        cin >> val;
-        inorder.push_back(val)
+        cin >> in[i];
+        idx[in[i]] = i;
     }
     for (int i = 0; i < n; ++i) {
-        int val;
-        cin >> val;
-        preorder.push_back(val);
+        cin >> post[i];
     }
 
+    print(0, 0, n);
     return 0;
 }
