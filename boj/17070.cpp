@@ -3,12 +3,34 @@
 using namespace std;
 
 int n;
-int board[17][17];
-int dp[17][17][3];  // k: 가로0,세로1,대각선2 경우의 수
+int a[16][16];
 
-bool valid(int r, int c) {
-    if (1 <= r && 1 <= c && r <= n && c <= n && board[r][c] == 0) return true;
-    return false;
+int go(int r, int c, int d) {  // (r,c), 방향1,2,3 가로세로대각선
+    if (r == n - 1 && c == n - 1) return 1;
+
+    int ans = 0;
+    if (d == 1) {  // 가로+가로, 가로+대각
+        if (c + 1 < n && a[r][c + 1] == 0)
+            ans += go(r, c + 1, 1);
+        if (c + 1 < n && r + 1 < n && a[r + 1][c] == 0 && a[r][c + 1] == 0 && a[r + 1][c + 1] == 0)
+            ans += go(r + 1, c + 1, 3);
+    }
+    if (d == 2) {  // 세로+세로, 세로+대각
+        if (r + 1 < n && a[r + 1][c] == 0)
+            ans += go(r + 1, c, 2);
+        if (r + 1 < n && c + 1 < n && a[r][c + 1] == 0 && a[r + 1][c] == 0 && a[r + 1][c + 1] == 0)
+            ans += go(r + 1, c + 1, 3);
+    }
+    if (d == 3) {  // 대각+가로, 대각+세로, 대각+대각
+        if (c + 1 < n && a[r][c + 1] == 0)
+            ans += go(r, c + 1, 1);
+        if (r + 1 < n && a[r + 1][c] == 0)
+            ans += go(r + 1, c, 2);
+        if (r + 1 < n && c + 1 < n && a[r + 1][c] == 0 && a[r][c + 1] == 0 && a[r + 1][c + 1] == 0)
+            ans += go(r + 1, c + 1, 3);
+    }
+
+    return ans;
 }
 
 int main() {
@@ -16,27 +38,13 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    // (1,1), (1,2)은 항상 빈칸
-    // (0,0) to (n-1,n-1) 가는 방법의 수
     cin >> n;
-    for (int i = 1; i <= n; ++i) {
-        for (int j = 1; j <= n; ++j) {
-            cin >> board[i][j];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> a[i][j];
         }
     }
 
-    dp[1][2][0] = 1;
-    for (int i = 1; i <= n; ++i) {
-        for (int j = 1; j <= n; ++j) {
-            if (valid(i, j - 1) && valid(i, j))  // 가로
-                dp[i][j][0] += dp[i][j - 1][0] + dp[i][j - 1][2];
-            if (valid(i - 1, j) && valid(i, j))  // 세로
-                dp[i][j][1] += dp[i - 1][j][1] + dp[i - 1][j][2];
-            if (valid(i - 1, j - 1) && valid(i - 1, j) && valid(i, j - 1) && valid(i, j))  // 대각선
-                dp[i][j][2] += dp[i - 1][j - 1][0] + dp[i - 1][j - 1][1] + dp[i - 1][j - 1][2];
-        }
-    }
-
-    cout << dp[n][n][0] + dp[n][n][1] + dp[n][n][2];
+    cout << go(0, 1, 1);
     return 0;
 }

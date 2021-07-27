@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <bitset>
 #include <iostream>
 #include <queue>
 #include <string>
@@ -7,7 +8,14 @@
 using namespace std;
 
 int main() {
-    vector<int> v{5, 6, 7, 8};
-    int n = 0;
-    cout << n << endl;
+    string s = "0101";
+    int len = 4;
+    bitset<len> bset;
+    for (int i = 0; i < 10; ++i) {
+        bset[i] = 1;
+    }
+
+    for (int i = 0; i < bset.size(); ++i) {
+        cout << bset[i] << endl;
+    }
 }

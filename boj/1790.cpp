@@ -1,18 +1,36 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
-int n;
-long long k;
-
 long long calcLen(int n) {
-    long long result = 0;
-    for (int start = 1, len = 1; start <= n; start *= 10, len++) {
-        int end = start * 10 - 1;  // 1~9, 10~99, 100~999, ...
-        if (end > n) end = n;
-        result += (long long)(end - start + 1) * len;
+    long long ret = 0;
+    for (int s = 1, len = 1; s <= n; s *= 10, ++len) {
+        int e = s * 10 - 1;  // 1~9, 10~99, 100~999...
+        if (e > n) e = n;
+        ret += (long long)(e - s + 1) * len;
     }
-    return result;
+    return ret;
+}
+
+long long solve(int n, int k) {
+    long long len = calcLen(n);
+    if (len < k) return -1;
+
+    int l = 1, r = n;
+    int ans = 0;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        if (calcLen(mid) < k)
+            l = mid + 1;
+        else {
+            r = mid - 1;
+            ans = mid;
+        }
+    }
+
+    string s = to_string(ans);
+    return s[len - 1 - n + k];
 }
 
 int main() {
@@ -20,27 +38,9 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
+    int n, k;  // 1~n까지의 수 1억, k번째숫자 10억
     cin >> n >> k;
-    if (calcLen(n) < k) {
-        cout << -1;
-        return 0;
-    }
 
-    int left = 1;  // 1~N
-    int right = n;
-    int ans = 0;
-    while (left <= right) {
-        int mid = (left + right) / 2;
-        if (calcLen(mid) < k)  // mid까지 이어쓴 길이가 k보다 작으면
-            left = mid + 1;
-        else {
-            right = mid - 1;
-            ans = mid;
-        }
-    }
-
-    string s = to_string(ans);
-    long long N = calcLen(ans);
-    cout << s[s.length() - 1 - (N - k)] << endl;
+    cout << solve(n, k);
     return 0;
 }
