@@ -1,0 +1,1 @@
+{"name":"Local: 2981","url":"/Users/mcm/c/2981.cpp","tests":[{"id":1627644035852,"input":"3\n6\n34\n38","output":"2 4"},{"id":1627644043160,"input":"5\n5\n17\n23\n14\n83","output":"3"},{"id":1627652499557,"input":"3\n6\n36\n216","output":"2 3 5 6 10 15 30"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/2981.cpp","group":"local","local":true}
