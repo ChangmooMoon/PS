@@ -8,14 +8,10 @@
 using namespace std;
 
 int main() {
-    string s = "0101";
-    int len = 4;
-    bitset<len> bset;
-    for (int i = 0; i < 10; ++i) {
-        bset[i] = 1;
-    }
-
-    for (int i = 0; i < bset.size(); ++i) {
-        cout << bset[i] << endl;
+    vector<int> a(8);
+    a[0] = 1;
+    rotate(a.begin(), a.end() - 3, a.end());
+    for (int n : a) {
+        cout << n << ' ';
     }
 }
