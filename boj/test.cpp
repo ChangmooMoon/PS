@@ -1,17 +1,7 @@
-#include <algorithm>
-#include <bitset>
 #include <iostream>
-#include <queue>
-#include <string>
-#include <unordered_map>
-#include <vector>
 using namespace std;
 
 int main() {
-    vector<int> a(8);
-    a[0] = 1;
-    rotate(a.begin(), a.end() - 3, a.end());
-    for (int n : a) {
-        cout << n << ' ';
-    }
+    // 0 | 0 = 0, 0|1 = 1, 1|0 = 1, 1|1 = 1 둘다 0이여야 
+    cout << (15 | 12);  // 1111 | 1100 = 1111
 }
