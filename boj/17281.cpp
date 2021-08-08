@@ -5,8 +5,9 @@ using namespace std;
 
 int n, ans;
 int a[50][9];  // 이닝 50
+vector<int> p = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-int solve(vector<int>& p) {
+int solve() {
     int point = 0, hIdx = 0;  // 점수, 타자인덱스
 
     for (int i = 0; i < n; ++i) {
@@ -51,7 +52,6 @@ int main() {
         }
     }
 
-    vector<int> p = {0, 1, 2, 3, 4, 5, 6, 7, 8};
     do {
         if (p[3] != 0) continue;
 

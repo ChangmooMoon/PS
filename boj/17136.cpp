@@ -1,6 +1,5 @@
 #include <iostream>
 #define INF 0x3f3f3f3f
-
 using namespace std;
 
 int board[10][10];                 // 1일때만 종이 가능
