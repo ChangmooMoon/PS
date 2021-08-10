@@ -3,6 +3,7 @@
 #include <vector>
 using namespace std;
 
+// dp방식 1
 int n, m;  // 1000
 int a[1001][1001];
 int d[1001][1001];
