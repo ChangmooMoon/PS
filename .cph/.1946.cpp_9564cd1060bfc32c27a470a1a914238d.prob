@@ -1,1 +1,0 @@
-{"name":"Local: 1946","url":"/Users/mcm/c/1946.cpp","tests":[{"id":1628434137359,"input":"2\n5\n3 2\n1 4\n4 1\n2 3\n5 5\n7\n3 6\n7 3\n4 2\n1 4\n5 7\n2 5\n6 1","output":"4\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/1946.cpp","group":"local","local":true}
