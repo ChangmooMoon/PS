@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <vector>
@@ -11,8 +10,8 @@ typedef pair<int, int> pii;
 int n, ans = INF;  // 도시갯수10
 int p[11];         //  인구100
 vector<int> graph[11];
-bool check[11];
-int which[11];
+bool check[11];  // 방문여부
+int which[11];   // team0, team1 구분
 
 pii dfs(int now, int team) {
     check[now] = true;
@@ -50,7 +49,7 @@ int main() {
         memset(check, false, sizeof(check));
         memset(which, 0, sizeof(which));
 
-        int s1 = -1, s2 = -1;
+        int s1, s2;
         for (int j = 0; j < n; ++j) {
             if (i & (1 << j)) {
                 which[j + 1] = 1;
@@ -67,10 +66,6 @@ int main() {
         }
     }
 
-    if (ans == INF)
-        cout << -1;
-    else
-        cout << ans;
-
+    cout << (ans == INF ? -1 : ans);
     return 0;
 }
