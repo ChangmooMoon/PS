@@ -11,9 +11,9 @@ int n, ans = INF;  // 도시갯수10
 int p[11];         //  인구100
 vector<int> graph[11];
 bool check[11];  // 방문여부
-int which[11];   // team0, team1 구분
+bool which[11];  // team0, team1 구분
 
-pii dfs(int now, int team) {
+pii dfs(int now, bool team) {
     check[now] = true;
 
     pii ret = {1, p[now]};
@@ -47,12 +47,12 @@ int main() {
 
     for (int i = 1; i < (1 << n) - 1; ++i) {  // 000001~111110 까지 체크
         memset(check, false, sizeof(check));
-        memset(which, 0, sizeof(which));
+        memset(which, false, sizeof(which));
 
         int s1, s2;
         for (int j = 0; j < n; ++j) {
             if (i & (1 << j)) {
-                which[j + 1] = 1;
+                which[j + 1] = true;
                 s1 = j + 1;
             } else {
                 s2 = j + 1;
