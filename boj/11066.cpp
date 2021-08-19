@@ -3,7 +3,7 @@
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
-
+// dp 탑다운
 int t;
 int a[501];
 int d[501][501];  // i부터 j까지 합치는 최소비용

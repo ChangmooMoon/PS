@@ -6,7 +6,7 @@ using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 #define INF 987654321
 
-// O(체력^3)
+// O(61^3) * 3! = 136만
 int n;
 int d[61][61][61];
 // d[i][j][k] = min(체력이 i,j,k일때 모두 파괴하기 위해 공격해야되는 횟수)
@@ -25,7 +25,7 @@ int go(int i, int j, int k) {
     do {
         ans = min(ans, go(i - permu[0], j - permu[1], k - permu[2]));
     } while (next_permutation(permu.begin(), permu.end()));
-    ans += 1;
+    ans += 1; // 이번턴 카운트
 
     return ans;
 }
