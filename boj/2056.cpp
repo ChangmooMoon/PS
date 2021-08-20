@@ -3,55 +3,49 @@
 #include <queue>
 #include <vector>
 using namespace std;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int n;
-vector<int> graph[10001];
-vector<int> ind(10001);
-vector<int> t(10001);
-vector<int> d(10001);  // 작업 끝나는 시간
+vector<int> a[10001];
+int t[10001], ind[10001], d[10001];  // d[i] = min(i까지의 작업 완료 시간)
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
+    FASTIO;
     cin >> n;
     for (int i = 1; i <= n; ++i) {
+        // 시간, 선행작업 갯수, (...선행작업 번호)
         int m;
         cin >> t[i] >> m;
         for (int j = 0; j < m; ++j) {
-            int u;
-            cin >> u;
-            graph[u].push_back(i);
-            ind[i]++;
+            int v;
+            cin >> v;
+            a[v].push_back(i);
+            ++ind[i];
         }
     }
 
     queue<int> q;
+    // ind가 0인 노드부터 시작
     for (int i = 1; i <= n; ++i) {
         if (ind[i] == 0) {
             q.push(i);
             d[i] = t[i];
         }
-    }  // 초기화
+    }
 
     while (!q.empty()) {
-        int u = q.front();
+        int x = q.front();
         q.pop();
 
-        for (int i = 0; i < graph[u].size(); ++i) {
-            int v = graph[u][i];
-            ind[v]--;
-            if (ind[v] == 0) {
-                q.push(v);
-            }
-            if (d[v] < d[u] + t[v]) {
-                d[v] = d[u] + t[v];
-            }
+        for (int i = 0; i < a[x].size(); ++i) {
+            int y = a[x][i];
+            --ind[y];
+            d[y] = max(d[x] + t[y], d[y]);
+            if (ind[y] == 0) q.push(y);
         }
     }
 
-    cout << *max_element(d.begin(), d.end());
+    cout << *max_element(d + 1, d + n + 1);
 
     return 0;
 }
