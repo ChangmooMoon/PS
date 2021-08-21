@@ -59,8 +59,8 @@ int main() {
             }
         }
 
-        pii team1 = dfs(s1, 1);
-        pii team2 = dfs(s2, 0);
+        pii team1 = dfs(s1, true);
+        pii team2 = dfs(s2, false);
         if (team1.first + team2.first == n) {
             ans = min(ans, abs(team1.second - team2.second));
         }
