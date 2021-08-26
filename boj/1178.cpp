@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -9,7 +11,6 @@ typedef pair<int, int> pii;
 
 int main() {
     FASTIO;
-    
-    
+
     return 0;
 }
