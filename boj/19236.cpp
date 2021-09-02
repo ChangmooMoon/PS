@@ -1,88 +1,88 @@
-#include <algorithm>
 #include <cstring>
 #include <iostream>
-#include <vector>
 using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int dr[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-int dc[] = {0, 1, 1, 1, 0, -1, -1, -1};
+int dc[] = {0, -1, -1, -1, 0, 1, 1, 1};
 
 struct Fish {
     int r, c, dir;
-    bool isAlive;
 };
 
-vector<Fish> fishList(17);                     // 상어idx0~15 저장
-vector<vector<int>> board(4, vector<int>(4));  // 물고기 위치별로 idx 저장
-int sharkDir, sharkEat;                        // 상어방향, 상어먹은물고기인덱스합
+int ans = 0;
 
-void solve(int sr, int sc, int sDir, int eat, vector<Fish> fList, vector<vector<int>> map) {
-    // 1. 물고기 이동
-    for (Fish& fish : fList) {
-        const auto& [r, c, dir, isAlive] = fish;
+// 1. 상어 먹기 2. 물고기 무빙 3. 상어 무빙
+void solve(int board[][4], Fish fish[], int sr, int sc, int eat) {
+    int cboard[4][4];  // idx
+    Fish cfish[16];    // r, c, dir
+    memcpy(cboard, board, sizeof(cboard));
+    memcpy(cfish, fish, sizeof(cfish));
 
-        if (!isAlive) continue;
-        for (int i = 0; i < 8; ++i) {
-            int nr = r + dr[i];
-            int nc = c + dc[i];
-            int nDir = (dir + i) % 8;
-            if (0 > nr || 0 > nc || nr <= 4 || nc <= 4) continue;
-            if (map[nr][nc] == 17) continue;
+    // 1. 상어 물고기 먹기
+    int fIdx = cboard[sr][sc];
+    eat += fIdx + 1;
+    if (ans < eat) ans = eat;  // 최대값 갱신
 
-            swap(map[nr][nc], map[r][c]);
-            cout << endl;
-            swap(fList[map[nr][nc]], fList[map[r][c]]);
-        }
-    }
+    int sharkDir = cfish[fIdx].dir;
+    cfish[fIdx].dir = -1;  // 죽은 물고기
+    cboard[sr][sc] = -1;
 
-    // 2. 상어 이동
-    bool sharkEatFood = true;
-    int nsr = sr + dr[sDir], nsc = sc + dc[sDir];
+    // 2. 물고기 무빙
+    for (int i = 0; i < 16; ++i) {
+        if (cfish[i].dir == -1) continue;
 
-    while (0 <= nsr && 0 <= nsc && nsr < 4 && nsc < 4) {  // 0,1,2,3
-        vector<Fish> fList_cpy = fList;
-        vector<vector<int>> map_cpy = map;
+        const auto [r, c, dir] = cfish[i];  // 현재 위치
+        int nr = r + dr[dir];
+        int nc = c + dc[dir];
+        int nDir = dir;
 
-        if (map_cpy[nsr][nsc] > 0) {
-            int fIdx = map_cpy[nsr][nsc];
-            fList_cpy[fIdx].isAlive = false;
-            map_cpy[sr][sc] = 0;
-            map_cpy[nsr][nsc] = 17;
-            solve(nsr, nsc, fList_cpy[fIdx].dir, eat + fIdx, fList_cpy, map_cpy);
-            sharkEatFood = false;
+        while (nr < 0 || nc < 0 || 4 <= nr || 4 <= nc || (nr == sr && nc == sc)) {
+            nDir = (nDir + 1) % 8;
+            nr = r + dr[nDir];
+            nc = c + dc[nDir];
         }
 
-        nsr += dr[sDir];
-        nsc += dc[sDir];
-    }
+        if (cboard[nr][nc] != -1) {  // 물고기 있으면 자리스왑
+            int targetIdx = cboard[nr][nc];
+            cfish[i] = {nr, nc, nDir};
+            cfish[targetIdx] = {r, c, cfish[targetIdx].dir};
 
-    if (sharkEatFood) {
-        sharkEat = max(sharkEat, eat);
-        return;
-    }
+            cboard[nr][nc] = i;
+            cboard[r][c] = targetIdx;
+        } else {  // 없으면 그냥 이동
+            cfish[i] = {nr, nc, nDir};
 
-    return;
+            cboard[nr][nc] = i;
+            cboard[r][c] = -1;
+        }
+    }
+    // 3. 상어 무빙
+    for (int i = 1; i <= 3; ++i) {  // 1,2,3칸 이동
+        int nr = sr + dr[sharkDir] * i;
+        int nc = sc + dc[sharkDir] * i;
+        if (0 > nr || 0 > nc || 4 <= nr || 4 <= nc) break;
+        if (cboard[nr][nc] != -1) {
+            solve(cboard, cfish, nr, nc, eat);
+        }
+    }
 }
 
 int main() {
     FASTIO;
+    Fish fish[16];
+    int board[4][4];
+
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             int idx, dir;
             cin >> idx >> dir;
-            --dir;
-            fishList[idx] = {i, j, dir, true};
+            --idx, --dir;
             board[i][j] = idx;
+            fish[idx] = {i, j, dir};
         }
     }
-
-    sharkDir = fishList[board[0][0]].dir;
-    fishList[board[0][0]].isAlive = false;
-    sharkEat += board[0][0];
-    board[0][0] = 17;  // 상어 idx 17
-
-    solve(0, 0, sharkDir, sharkEat, fishList, board);
-    cout << sharkEat;
+    solve(board, fish, 0, 0, 0);
+    cout << ans;
     return 0;
 }
