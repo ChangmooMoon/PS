@@ -6,7 +6,9 @@ using namespace std;
 #define INF 987654321
 #define pii pair<int, int>
 
-// 최단경로 - 다익스트라
+// 최단경로 - 다익스트라 NlogN으로 푸는 방식(우선순위큐)
+// 다익스트라
+// 1. 검사하지 않은 정점 중에서 dist의 값이 가장 작은
 
 struct Edge {
     int to, weight;
