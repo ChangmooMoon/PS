@@ -1,30 +1,25 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
-// LIS 문제
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+
+int n;
+vector<int> a;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    // NLogN 이분탐색
-    int n;
+    FASTIO;
     cin >> n;
-    vector<int> a;
     for (int i = 0; i < n; ++i) {
-        int num;
-        cin >> num;
-        auto it = lower_bound(a.begin(), a.end(), num);
-        if (it == a.end())
-            a.push_back(num);
-        else
-            *it = num;
+        int b;
+        cin >> b;
 
-        for (int i = 0; i < a.size(); ++i) {
-            cout << a[i] << ' ';
+        auto it = lower_bound(a.begin(), a.end(), b);
+        if (it != a.end()) { // 발견되면 그 위치 값 수정
+            *it = b;
+        } else { // 발견 안되면 끝에 추가
+            a.push_back(b); 
         }
-        cout << endl;
     }
 
     cout << a.size();
