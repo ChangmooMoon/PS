@@ -1,28 +1,69 @@
-#include <algorithm>
 #include <cstring>
 #include <iostream>
-#include <string>
 #include <vector>
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int n;
-int a[20][20];
+int board[21][21], board_cpy[21][21];
 
-// 5번 이동해서 만들 수 있는 가장 큰 블록의 값
-// 1. 게임판을 상하좌우로 기울이기, 2. 5번 기울이는 각각의 방향을 정하기
-// 4^5 = 1024 = 2^10
+void rotate() {
+    int tmp[21][21];
+    memcpy(tmp, board_cpy, sizeof(board_cpy));
 
-int main() {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            board_cpy[i][j] = tmp[n - 1 - j][i];
+}
+
+void tilt(int d) {
+    while (d--) rotate();
+
+    for (int i = 0; i < n; i++) {
+        int tmpArr[21] = {};
+        int idx = 0;
+        for (int j = 0; j < n; j++) {
+            if (!board_cpy[i][j]) continue;
+            if (!tmpArr[idx])
+                tmpArr[idx] = board_cpy[i][j];
+            else if (tmpArr[idx] == board_cpy[i][j]) {
+                tmpArr[idx] *= 2;
+                ++idx;
+            } else {
+                ++idx;
+                tmpArr[idx] = board_cpy[i][j];
+            }
+        }
+        for (int j = 0; j < n; j++) board_cpy[i][j] = tmpArr[j];
+    }
+}
+
+int main(void) {
     FASTIO;
+
     cin >> n;
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            cin >> a[i][j];
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> board[i][j];
+
+    int ans = 0;
+    for (int k = 0; k < 1024; ++k) {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board_cpy[i][j] = board[i][j];
+        int order = k;
+        for (int i = 0; i < 5; i++) {
+            int d = order % 4;
+            order /= 4;
+            tilt(d);
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                ans = max(ans, board_cpy[i][j]);
+            }
         }
     }
 
+    cout << ans;
     return 0;
 }
