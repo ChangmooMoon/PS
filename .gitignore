@@ -11,3 +11,4 @@ boj/.cph
 _.cpp
 test.cpp
 .gitignore
+*.class
