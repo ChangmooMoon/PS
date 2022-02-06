@@ -1,136 +1,112 @@
-#include <algorithm>
 #include <iostream>
+#include <vector>
 using namespace std;
+#define endl '\n'
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+// 배열돌리기
 
-int n, m, r;
-int a[100][100];
-int tmp[100][100] = {0};
+int n, m, r, f;
 
-void xAxis() {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            tmp[i][j] = a[n - 1 - i][j];
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
+void f1(vector<vector<int>>& a) {
+    vector<vector<int>> b(n, vector<int>(m));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            b[i][j] = a[n - 1 - i][j];
+        }
+    }
+    a = b;
 }
-void yAxis() {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            tmp[i][j] = a[i][m - 1 - j];
 
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
+void f2(vector<vector<int>>& a) {
+    vector<vector<int>> b(n, vector<int>(m));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            b[i][j] = a[i][m - 1 - j];
+        }
+    }
+    a = b;
 }
-void rotate90() {
-    int h = n;
+
+void f3(vector<vector<int>>& a) {
+    vector<vector<int>> b(m, vector<int>(n));
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            b[i][j] = a[n - 1 - j][i];
+        }
+    }
+    a = b;
     swap(n, m);
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            tmp[i][j] = a[h - 1 - j][i];
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
 }
 
-void rotate90_reversed() {
-    int w = m;
-
+void f4(vector<vector<int>>& a) {
+    vector<vector<int>> b(m, vector<int>(n));
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            b[i][j] = a[j][m - 1 - i];
+        }
+    }
+    a = b;
     swap(n, m);
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            tmp[i][j] = a[j][w - 1 - i];
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
 }
 
-void rotate_quadrant() {
-    int N = n / 2;
-    int M = m / 2;
-
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i][j + M] = a[i][j];
+void f5(vector<vector<int>>& a) {
+    vector<vector<int>> b(n, vector<int>(m));
+    for (int i = 0; i < n / 2; ++i) {
+        for (int j = 0; j < m / 2; ++j) {
+            b[i][j] = a[i + n / 2][j];
+            b[i][j + m / 2] = a[i][j];
+            b[i + n / 2][j + m / 2] = a[i][j + m / 2];
+            b[i + n / 2][j] = a[i + n / 2][j + m / 2];
         }
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i + N][j + M] = a[i][j + M];
-        }
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i + N][j] = a[i + N][j + M];
-        }
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i][j] = a[i + N][j];
-        }
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
+    }
+    a = b;
 }
 
-void rotate_quadrant_reversed() {
-    int N = n / 2;
-    int M = m / 2;
-
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i + N][j + M] = a[i + N][j];
+void f6(vector<vector<int>>& a) {
+    vector<vector<int>> b(n, vector<int>(m));
+    for (int i = 0; i < n / 2; ++i) {
+        for (int j = 0; j < m / 2; ++j) {
+            b[i][j] = a[i][j + m / 2];
+            b[i][j + m / 2] = a[i + n / 2][j + m / 2];
+            b[i + n / 2][j + m / 2] = a[i + n / 2][j];
+            b[i + n / 2][j] = a[i][j];
         }
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i][j + M] = a[i + N][j + M];
-        }
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i + N][j] = a[i][j];
-        }
-
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < M; ++j) {
-            tmp[i][j] = a[i][j + M];
-        }
-
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            a[i][j] = tmp[i][j];
+    }
+    a = b;
 }
+
 int main() {
+    FASTIO;
     cin >> n >> m >> r;
-    for (int i = 0; i < n; ++i)
+    vector<vector<int>> a(n, vector<int>(m));
+    for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             cin >> a[i][j];
         }
+    }
 
-    for (int i = 0; i < r; ++i) {
-        int f;
+    while (r--) {
         cin >> f;
         if (f == 1)
-            xAxis();
+            f1(a);
         else if (f == 2)
-            yAxis();
+            f2(a);
         else if (f == 3)
-            rotate90();
+            f3(a);
         else if (f == 4)
-            rotate90_reversed();
+            f4(a);
         else if (f == 5)
-            rotate_quadrant();
-        else if (f == 6)
-            rotate_quadrant_reversed();
+            f5(a);
+        else
+            f6(a);
     }
 
     for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j)
+        for (int j = 0; j < m; ++j) {
             cout << a[i][j] << ' ';
-        cout << '\n';
+        }
+        cout << endl;
     }
+
     return 0;
 }

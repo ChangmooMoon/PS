@@ -7,7 +7,7 @@ bool check[9];
 int a[9];
 int n, m;
 
-void go(int idx) {
+void go(int idx, int pick) {
     if (idx == m) {
         for (int i = 0; i < m; ++i) {
             cout << a[i] << ' ';
@@ -32,6 +32,6 @@ void go(int idx) {
 int main() {
     FASTIO;
     cin >> n >> m;
-    go(0);  // 4P2
+    go(1, 0);  // 4P2
     return 0;
 }

@@ -1,0 +1,1 @@
+{"name":"Local: 1231","url":"/Users/mcm/c/boj/1231.cpp","tests":[{"id":1627005468521,"input":"2 3 10\n10 15 15\n13 11 20","output":"24"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/boj/1231.cpp","group":"local","local":true}

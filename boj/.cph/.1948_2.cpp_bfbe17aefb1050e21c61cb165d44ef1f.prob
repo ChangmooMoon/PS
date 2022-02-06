@@ -1,0 +1,1 @@
+{"name":"Local: 1948_2","url":"/Users/mcm/c/boj/1948_2.cpp","tests":[{"id":1616664063153,"input":"7\n9\n1 2 4\n1 3 2\n1 4 3\n2 6 3\n2 7 5\n3 5 1\n4 6 4\n5 6 2\n6 7 5\n1 7","output":"12\n5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/boj/1948_2.cpp","group":"local","local":true}

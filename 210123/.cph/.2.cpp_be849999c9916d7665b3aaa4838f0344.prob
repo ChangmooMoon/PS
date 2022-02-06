@@ -1,0 +1,1 @@
+{"name":"Local: 2","url":"/Users/mcm/c/test/2.cpp","tests":[{"id":1642912228797,"input":"3 3 1","output":"1 2 3"},{"id":1642912233916,"input":"1 1 1","output":"1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/test/2.cpp","group":"local","local":true}

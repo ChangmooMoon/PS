@@ -1,85 +1,80 @@
 #include <cstring>
 #include <iostream>
 #include <queue>
-#define size _size
 using namespace std;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-const int dx[4] = {1, 0, -1, 0};
-const int dy[4] = {0, 1, 0, -1};
+int dr[] = {-1, 1, 0, 0};
+int dc[] = {0, 0, -1, 1};
 
-// 1. d 오름차순, 2. 행 오름차순 // 3. 열 오름차순
-struct Baby {
-    int x, y, d;
-    bool operator<(const Baby& other) const {
+int n, sr, sc, ans;
+int a[20][20];
+bool check[20][20];
+
+struct Shark {
+    int r, c, d;
+    bool operator<(const Shark& other) const {
         if (d == other.d) {
-            if (x == other.x) return y > other.y;
-            return x > other.x;
+            if (r == other.r) return c > other.c;
+            return r > other.r;
         }
         return d > other.d;
     }
 };
 
-int n, size = 2, exp = 0, ans = 0;
-int a[20][20];
-int check[20][20];
-priority_queue<Baby> pq;
+void bfs(int sr, int sc) {
+    int size = 2, exp = 0;
+    priority_queue<Shark> pq;
+    pq.push({sr, sc, 0});
+    check[sr][sc] = true;
 
-void bfs() {
     while (!pq.empty()) {
-        int x, y, d;
-        x = pq.top().x;
-        y = pq.top().y;
+        int r, c, d;
+        r = pq.top().r;
+        c = pq.top().c;
         d = pq.top().d;
         pq.pop();
 
-        // 먹이랑 겹쳐진 상태
-        if (a[x][y] > 0 && a[x][y] < size) {
-            a[x][y] = 0;
-            exp++;
+        if (a[r][c] && a[r][c] < size) {
+            a[r][c] = 0;
+            ans += d;
+            d = 0;
+            ++exp;
             if (exp == size) {
-                size++;
+                ++size;
                 exp = 0;
             }
-            ans += d;
-
             memset(check, false, sizeof(check));
-            d = 0;
-            while (!pq.empty()) {
-                pq.pop();
-            }
+            pq = priority_queue<Shark>();
         }
 
         for (int i = 0; i < 4; ++i) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (0 > nx || 0 > ny || n <= nx || n <= ny) continue;
-            if (check[nx][ny]) continue;
-            if (a[nx][ny] > 0 && a[nx][ny] > size) continue;
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if (0 > nr || 0 > nc || n <= nr || n <= nc) continue;
+            if (check[nr][nc]) continue;
+            if (a[nr][nc] > 0 && a[nr][nc] > size) continue;
 
-            pq.push({nx, ny, d + 1});
-            check[nx][ny] = true;
+            pq.push({nr, nc, d + 1});
+            check[nr][nc] = true;
         }
     }
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
+    FASTIO;
     cin >> n;
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             cin >> a[i][j];
             if (a[i][j] == 9) {
-                pq.push({i, j, 0});
+                sr = i, sc = j;
                 a[i][j] = 0;
             }
         }
     }
 
-    bfs();
+    bfs(sr, sc);
     cout << ans;
-
     return 0;
 }

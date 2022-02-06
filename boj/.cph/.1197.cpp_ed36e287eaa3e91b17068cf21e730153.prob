@@ -1,0 +1,1 @@
+{"name":"Local: 1197","url":"/Users/mcm/c/boj/1197.cpp","tests":[{"id":1616931741178,"input":"3 3\n1 2 1\n2 3 2\n1 3 3","output":"3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/boj/1197.cpp","group":"local","local":true}

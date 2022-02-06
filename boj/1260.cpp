@@ -1,62 +1,60 @@
 #include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <queue>
 #include <vector>
 using namespace std;
+#define endl '\n'
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int n, m, v;  // node 1000, edge 10000, start
-vector<int> check(1001);
-vector<int> a[1001];
+int n, m, s;
+vector<int> a[1005];
+bool check[1005];
 
-void dfs(int x) {
-    check[x] = 1;
-    cout << x << ' ';
-    for (int i = 0; i < a[x].size(); ++i) {
-        int y = a[x][i];
-        if (!check[y]) {
-            dfs(y);
-        }
+void dfs(int i) {
+    check[i] = true;
+    cout << i << ' ';
+    for (int j : a[i]) {
+        if (!check[j]) dfs(j);
     }
 }
 
-void bfs(int x) {
-    fill(check.begin(), check.end(), 0);
+void bfs(int i) {
     queue<int> q;
-    q.push(x);
-    check[x] = 1;
+    check[i] = true;
+    q.push(i);
+    cout << i << ' ';
 
     while (!q.empty()) {
-        int now = q.front();
-        cout << now << ' ';
+        int x = q.front();
         q.pop();
-        for (int i = 0; i < a[now].size(); ++i) {
-            int y = a[now][i];
-            if (!check[y]) {
-                q.push(y);
-                check[y] = true;
+        for (int j : a[x]) {
+            if (!check[j]) {
+                check[j] = true;
+                q.push(j);
+                cout << j << ' ';
             }
         }
     }
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    cin >> n >> m >> v;
-
-    for (int i = 1; i <= m; ++i) {
-        int u, v;
-        cin >> u >> v;
-        a[u].emplace_back(v);
-        a[v].emplace_back(u);
+    FASTIO;
+    cin >> n >> m >> s;
+    for (int i = 0; i < m; ++i) {
+        int x, y;
+        cin >> x >> y;
+        a[x].push_back(y);
+        a[y].push_back(x);
     }
+
     for (int i = 1; i <= n; ++i) {
         sort(a[i].begin(), a[i].end());
     }
 
-    dfs(v);
-    cout << '\n';
-    bfs(v);
+    dfs(s);
+    cout << endl;
+    memset(check, false, sizeof(check));
+    bfs(s);
     return 0;
 }

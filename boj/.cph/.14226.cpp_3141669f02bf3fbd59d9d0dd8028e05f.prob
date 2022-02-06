@@ -1,0 +1,1 @@
+{"name":"Local: 14226","url":"/Users/mcm/c/boj/14226.cpp","tests":[{"id":1614759269817,"input":"2","output":"2"},{"id":1614759275550,"input":"4","output":"4"},{"id":1614759277652,"input":"6","output":"5"},{"id":1614759282041,"input":"18","output":"8"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/boj/14226.cpp","group":"local","local":true}

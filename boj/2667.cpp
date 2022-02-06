@@ -1,31 +1,46 @@
 #include <algorithm>
 #include <iostream>
+#include <queue>
 #include <vector>
 using namespace std;
+typedef pair<int, int> pii;
+#define endl '\n'
 
-int dy[] = {1, -1, 0, 0};
-int dx[] = {0, 0, 1, -1};
-int n;  // n 25
-int a[25][25];
-int check[25][25];
-int ans[626];  // 1~625번 그룹
+int dr[] = {-1, 1, 0, 0};
+int dc[] = {0, 0, -1, 1};
 
-void dfs(int y, int x, int group) {
-    check[y][x] = group;
-    for (int i = 0; i < 4; ++i) {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if (0 <= ny && ny < n && 0 <= nx && nx < n) {
-            if (a[ny][nx] && !check[ny][nx]) {
-                dfs(ny, nx, group);
-            }
+int n;
+int a[25][25];  // 집1
+bool check[25][25];
+vector<int> ans;
+
+int bfs(int i, int j) {
+    int cnt = 0;
+    queue<pii> q;
+    q.push({i, j});
+    check[i][j] = true;
+
+    while (!q.empty()) {
+        const auto& [r, c] = q.front();
+        q.pop();
+        ++cnt;
+        for (int i = 0; i < 4; ++i) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if (0 > nr || nr >= n || 0 > nc || nc >= n) continue;
+            if (!a[nr][nc] || check[nr][nc]) continue;
+
+            q.push({nr, nc});
+            check[nr][nc] = true;
         }
     }
+
+    return cnt;
 }
 
+// 각 단지 집의 개수 출력
 int main() {
     cin >> n;
-
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             scanf("%1d", &a[i][j]);
@@ -35,26 +50,18 @@ int main() {
     int group = 0;
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            if (a[i][j] && !check[i][j]) {
-                group++;
-                dfs(i, j, group);
+            if (a[i][j] == 1 && !check[i][j]) {
+                ++group;
+                ans.push_back(bfs(i, j));
             }
         }
     }
+    sort(ans.begin(), ans.end());
 
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            int idx = check[i][j];
-            if (idx != 0) {
-                ans[idx]++;
-            }
-        }
+    cout << group << endl;
+    for (int i : ans) {
+        cout << i << endl;
     }
 
-    sort(ans, ans + group + 1);
-    cout << group << '\n';
-    for (int i = 1; i <= group; ++i) {
-        cout << ans[i] << '\n';
-    }
     return 0;
 }

@@ -1,0 +1,1 @@
+{"name":"Local: 1933","url":"/Users/mcm/c/boj/1933.cpp","tests":[{"id":1627284252496,"input":"8\n1 11 5\n2 6 7\n3 13 9\n12 7 16\n14 3 25\n19 18 22\n23 13 29\n24 4 28","output":"1 11 3 13 9 0 12 7 16 3 19 18 22 3 23 13 29 0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/mcm/c/boj/1933.cpp","group":"local","local":true}
