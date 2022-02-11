@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -6,28 +5,14 @@ using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int n;
+int t[10001], ind[10001], d[10001];
 vector<int> a[10001];
-int t[10001], ind[10001], d[10001];  // d[i] = min(i까지의 작업 완료 시간)
 
-int main() {
-    FASTIO;
-    cin >> n;
-    for (int i = 1; i <= n; ++i) {
-        // 시간, 선행작업 갯수, (...선행작업 번호)
-        int m;
-        cin >> t[i] >> m;
-        for (int j = 0; j < m; ++j) {
-            int v;
-            cin >> v;
-            a[v].push_back(i);
-            ++ind[i];
-        }
-    }
-
+int solve() {
+    int ret;
     queue<int> q;
-    // ind가 0인 노드부터 시작
     for (int i = 1; i <= n; ++i) {
-        if (ind[i] == 0) {
+        if (!ind[i]) {
             q.push(i);
             d[i] = t[i];
         }
@@ -37,15 +22,33 @@ int main() {
         int x = q.front();
         q.pop();
 
-        for (int i = 0; i < a[x].size(); ++i) {
-            int y = a[x][i];
+        for (int y : a[x]) {
             --ind[y];
-            d[y] = max(d[x] + t[y], d[y]);
-            if (ind[y] == 0) q.push(y);
+            if (d[y] < d[x] + t[y]) d[y] = d[x] + t[y];
+            if (!ind[y]) q.push(y);
         }
     }
 
-    cout << *max_element(d + 1, d + n + 1);
+    for (int i = 1; i <= n; ++i) {
+        if (ret < d[i]) ret = d[i];
+    }
+    return *max_element(d + 1, d + n + 1);
+}
 
+int main() {
+    FASTIO;
+    cin >> n;
+    for (int i = 1; i <= n; ++i) {
+        int len;
+        cin >> t[i] >> len;
+        for (int j = 0; j < len; ++j) {
+            int x;
+            cin >> x;
+            a[x].push_back(i);
+            ++ind[i];
+        }
+    }
+
+    cout << solve();
     return 0;
 }

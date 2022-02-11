@@ -2,41 +2,38 @@
 #include <queue>
 #include <vector>
 using namespace std;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int n, m;  // 학생수32000, 비교횟수100000
+int n, m;
+vector<int> a[32001];
+int ind[32001];
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    cin >> n >> m;
-    vector<int> graph[32001];
-    vector<int> ind(32001);
-
-    for (int i = 0; i < m; ++i) {
-        int u, v;
-        cin >> u >> v;
-        graph[u].push_back(v);
-        ind[v]++;
-    }
-
+void solve() {
     queue<int> q;
     for (int i = 1; i <= n; ++i) {
-        if (ind[i] == 0) q.push(i);
+        if (!ind[i]) q.push(i);
     }
 
     while (!q.empty()) {
-        int x = q.front();
+        int cur = q.front();
+        cout << cur << ' ';
         q.pop();
-        cout << x << ' ';
-
-        for (int i = 0; i < graph[x].size(); ++i) {
-            int y = graph[x][i];
-            ind[y]--;
-            if (ind[y] == 0) q.push(y);
+        for (int i : a[cur]) {
+            --ind[i];
+            if (!ind[i]) q.push(i);
         }
     }
-
-    return 0;
 }
+
+int main() {
+    FASTIO;
+    cin >> n >> m;
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        cin >> u >> v;
+        a[u].push_back(v);
+        ++ind[v];
+    }
+
+    solve();
+    return 0;
