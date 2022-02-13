@@ -1,10 +1,8 @@
-#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
-// 배열돌리기1
 
 int n, m, r;
 vector<vector<int>> a;
