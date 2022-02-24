@@ -10,7 +10,7 @@ int go(int i) {
     if (i == 1 || i == 2) return 1;
     int &ret = d[i];
     if (ret != -1) return ret;
-    return d[i] = go(i - 1) + go(i - 2);
+    return ret = go(i - 1) + go(i - 2);
 }
 
 int main() {

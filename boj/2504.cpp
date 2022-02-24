@@ -4,27 +4,26 @@
 using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-// 괄호, 스택문제
 int solve(string s) {
+    int ret = 0, mul = 1;
     stack<char> st;
-    int ret = 0, tmp = 1;
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '(') {
-            tmp *= 2;
             st.push('(');
+            mul *= 2;
         } else if (s[i] == '[') {
-            tmp *= 3;
             st.push('[');
+            mul *= 3;
         } else if (s[i] == ')') {
             if (st.empty() || st.top() != '(') return 0;
-            if (s[i - 1] == '(') ret += tmp;
             st.pop();
-            tmp /= 2;
-        } else {
+            if (s[i - 1] == '(') ret += mul;
+            mul /= 2;
+        } else if (s[i] == ']') {
             if (st.empty() || st.top() != '[') return 0;
-            if (s[i - 1] == '[') ret += tmp;
             st.pop();
-            tmp /= 3;
+            if (s[i - 1] == '[') ret += mul;
+            mul /= 3;
         }
     }
     if (!st.empty()) return 0;

@@ -1,50 +1,50 @@
-#include <algorithm>
+#include <cstring>
 #include <iostream>
+#include <queue>
+#include <tuple>
 #include <vector>
 using namespace std;
-#define INF 987654321
+typedef pair<int, int> pii;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+#define INF 0x3f3f3f3f
 
-struct Edge {
-    int to, weight;
-};
+// 다익스트라
+vector<pii> a[1001]; // from, {to, weight}
+int d[1001];
+bool check[1001];
 
-int n, m;                     // 노드, 엣지
-vector<Edge> a[1001];         // 인접리스트
-vector<int> dist(1001, INF);  // 최단거리
-vector<bool> check(1001);     // 방문여부
+int go(int s, int e) {
+    priority_queue<pii> q; // w, v;
+    q.push({0, s});
+    d[s] = 0;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    cin >> n >> m;
-    for (int i = 0; i < m; ++i) {
-        int from, to, weight;
-        cin >> from >> to >> weight;
-        a[from].push_back({to, weight});
-    }
-    int start, end;
-    cin >> start >> end;
-    dist[start] = 0;
-    for (int k = 0; k < n - 1; ++k) {
-        int d = INF + 1;
-        int x = -1;
-        for (int i = 1; i <= n; ++i) {
-            if (!check[i] && d > dist[i]) {
-                d = dist[i];
-                x = i;
-            }
-        }
-
+    while (!q.empty()) {
+        int w, x;
+        tie(w, x) = q.top();
+        q.pop();
+        if (check[x]) continue;
         check[x] = true;
         for (int i = 0; i < a[x].size(); ++i) {
-            int y = a[x][i].to;
-            dist[y] = min(dist[y], dist[x] + a[x][i].weight);
+            int y = a[x][i].first;
+            if (d[y] > d[x] + a[x][i].second) {
+                d[y] = d[x] + a[x][i].second;
+                q.push({-d[y], y});
+            }
         }
     }
+    return d[e];
+}
 
-    cout << dist[end];
-
+int main() {
+    FASTIO;
+    int n, m, u, v, w, s, e;
+    cin >> n >> m;
+    for (int i = 0; i < m; ++i) {
+        cin >> u >> v >> w;
+        a[u].push_back({v, w});
+    }
+    cin >> s >> e;
+    memset(d, INF, sizeof(d));
+    cout << go(s, e);
     return 0;
 }
