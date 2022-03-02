@@ -25,7 +25,7 @@ int solve(int now, int color, int prev) {
         }
         ret += sub;
     }
-    return d[now][color] = ret;
+    return ret;
 }
 
 int main() {

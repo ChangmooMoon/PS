@@ -4,36 +4,37 @@
 using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-// tree dp
 int n;
-vector<int> a[1000001];
-int d[1000001][2];
+vector<int> a[10001];
+int d[10001][2], w[10001];
 
-int dfs(int now, bool b, int prev) {
+int go(int now, bool b, int prev) {
     int &ret = d[now][b];
     if (ret != -1) return ret;
 
-    ret = b;
+    ret = w[now] * b;
     for (int next : a[now]) {
         if (next == prev) continue;
         if (b)
-            ret += min(dfs(next, true, now), dfs(next, false, now));
+            ret += go(next, false, now);
         else
-            ret += dfs(next, true, now);
+            ret += max(go(next, true, now), go(next, false, now));
     }
     return ret;
 }
 
 int main() {
     FASTIO;
-    memset(d, -1, sizeof(d));
     cin >> n;
+    for (int i = 1; i <= n; ++i) {
+        cin >> w[i];
+    }
     for (int i = 0; i < n - 1; ++i) {
         int u, v;
         cin >> u >> v;
         a[u].push_back(v), a[v].push_back(u);
     }
-
-    cout << min(dfs(1, true, 0), dfs(1, false, 0));
+    memset(d, -1, sizeof(d));
+    cout << max(go(1, false, 0), go(1, true, 0));
     return 0;
 }
