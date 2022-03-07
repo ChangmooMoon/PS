@@ -1,32 +1,20 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
-
+#include <iostream>
 using namespace std;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int card[500000], N, M;
-
-int solve(int target){
-    int* l = lower_bound(card, card+N, target);
-    int* r = upper_bound(card, card+N, target);
-    return r - l;
-}
-
-int main(){
-    cin.sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-
-    cin >> N;
-    for(int i = 0;i <N; ++i){
-        cin >> card[i];
+int n, m, t, a[500001];
+int main() {
+    FASTIO;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
     }
-    sort(card, card+N);
-    cin >> M;
-
-    for(int i = 0; i<M; ++i){
-        int target;
-        cin >> target;
-        cout << solve(target) << " ";
+    sort(a, a + n);
+    cin >> m;
+    for (int i = 0; i < m; ++i) {
+        cin >> t;
+        cout << upper_bound(a, a + n, t) - lower_bound(a, a + n, t) << ' ';
     }
-
     return 0;
 }
