@@ -1,31 +1,31 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int n, m;
-int a[9];
+vector<int> v;
 
-void go(int idx, int start) {
-    if (idx == m) {
-        for (int i = 0; i < m; ++i) {
-            cout << a[i] << ' ';
+void go(int idx, int p) {
+    if (p == m) {
+        for (int i : v) {
+            cout << i << ' ';
         }
         cout << endl;
         return;
     }
 
-    for (int i = start; i <= n; ++i) {
-        a[idx] = i;
-        go(idx + 1, i);
+    for (int i = idx; i <= n; ++i) {
+        v.push_back(i);
+        go(i, p + 1);
+        v.pop_back();
     }
 }
 
-// 중복조합 - O(n!) 방식이라서 비효율적
 int main() {
     FASTIO;
     cin >> n >> m;
-    go(0, 1);  // 4C2
-
+    go(1, 0);
     return 0;
 }

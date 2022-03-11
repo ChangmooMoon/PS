@@ -1,36 +1,35 @@
 #include <algorithm>
 #include <iostream>
+#include <vector>
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int n, m;
-int a[8], nums[8];
+int n, m, a[8];
+vector<int> v;
 
-void go(int idx) {
-    if (idx == m) {
-        for (int i = 0; i < m; ++i) {
-            cout << nums[a[i]] << ' ';
+void go(int p) {
+    if (p == m) {
+        for (int i : v) {
+            cout << i << ' ';
         }
         cout << endl;
         return;
     }
-
     for (int i = 0; i < n; ++i) {
-        a[idx] = i;
-        go(idx + 1);
+        v.push_back(a[i]);
+        go(p + 1);
+        v.pop_back();
     }
 }
 
-// N개의 자연수 중에 M개를 고른 수열, 선택중복가능
 int main() {
     FASTIO;
     cin >> n >> m;
     for (int i = 0; i < n; ++i) {
-        cin >> nums[i];
+        cin >> a[i];
     }
-    sort(nums, nums + n);
-
+    sort(a, a + n);
     go(0);
     return 0;
 }

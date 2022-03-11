@@ -1,35 +1,30 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
 int n, m;
-int a[8];
-bool check[8];
+vector<int> v;
 
-void go(int idx) {
-    if (idx == m) {
-        for (int i = 0; i < m; ++i) {
-            cout << a[i] << ' ';
+void go(int p) {
+    if (p == m) {
+        for (int i : v) {
+            cout << i << ' ';
         }
         cout << endl;
         return;
     }
-
     for (int i = 1; i <= n; ++i) {
-        check[i] = true;
-        a[idx] = i;
-        go(idx + 1);
-
-        check[i] = false;
+        v.push_back(i);
+        go(p + 1);
+        v.pop_back();
     }
 }
 
-// 중복순열
 int main() {
     FASTIO;
     cin >> n >> m;
     go(0);
-
     return 0;
 }
