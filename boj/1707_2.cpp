@@ -10,7 +10,7 @@ vector<int> a[20005];
 bool check[20005];
 bool color[20005];
 
-bool dfs(int cur) {
+(int cur) {
     for (int next : a[cur]) {
         if (!check[next]) {
             check[next] = true;

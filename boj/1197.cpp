@@ -8,8 +8,13 @@ tuple<int, int, int> a[100001];
 int p[10001];
 
 int Find(int x) {
-    if (x == p[x]) return x;
-    return p[x] = Find(p[x]);
+    if (x = p[x])
+        return x;
+    else {
+        int y = Find(p[x]);
+        p[x] = y;
+        return y;
+    }
 }
 
 int main() {

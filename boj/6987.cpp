@@ -23,7 +23,7 @@ bool dfs(int cnt) {
         --a[t1][2], --a[t2][0];
         if (dfs(cnt + 1)) return 1;
         ++a[t1][2], ++a[t2][0];
-    }
+}
     return 0;
 }
 

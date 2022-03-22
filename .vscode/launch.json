@@ -5,6 +5,13 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "java",
+			"name": "Launch Test",
+			"request": "launch",
+			"mainClass": "Test",
+			"projectName": "c_719f5375"
+		},
+		{
 			"name": "C/C++: clang++ Build and debug active file",
 			"type": "cppdbg",
 			"request": "launch",
@@ -22,7 +29,7 @@
 					"text": "-enable-pretty-printing",
 					"ignoreFailures": true
 				}
-			],
+			]
 		}
 	]
 }
