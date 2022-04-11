@@ -2,7 +2,7 @@
 using namespace std;
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int n, a[1001], d[1001][2];
+int n, a[301], d[301][2];
 // d[i][0] = max(d[i-2][0], d[i-2][1]) + a[i]
 // d[i][1] = d[i-1][0] + a[i];
 
