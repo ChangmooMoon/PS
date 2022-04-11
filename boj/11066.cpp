@@ -3,44 +3,37 @@
 using namespace std;
 #define endl '\n'
 #define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
-// dp 탑다운
-int t;
-int a[501];
-int d[501][501];  // i부터 j까지 합치는 최소비용
-// i ~ k ~ j
-//d[i][j] =  min(d[i][k] + d[k+1][j]) + 전체비용, i <= k < j
+
+int t, k, a[501], d[501][501];
+// d[i][j] = min(d[i][k] + d[k+1][j] + i~j까지 합)
 
 int go(int s, int e) {
-    if (s == e) return 0;  // 파일 1개
-    if (d[s][e] != -1) return d[s][e];
+    if (s == e) return 0;
+
+    int &ret = d[s][e];
+    if (ret != -1) return ret;
 
     int sum = 0;
-    int& ans = d[s][e];
-    for (int i = s; i <= e; ++i) {
-        sum += a[i];
+    for (int k = s; k <= e; ++k) {
+        sum += a[k];
     }
-
     for (int k = s; k <= e - 1; ++k) {
         int tmp = go(s, k) + go(k + 1, e) + sum;
-        if (ans == -1 || ans > tmp) ans = tmp;
+        if (ret == -1 || ret > tmp) ret = tmp;
     }
-
-    return ans;
+    return ret;
 }
 
 int main() {
     FASTIO;
     cin >> t;
     while (t--) {
-        int k;
-        cin >> k;  // 500장
+        cin >> k;
         for (int i = 1; i <= k; ++i) {
             cin >> a[i];
         }
-
         memset(d, -1, sizeof(d));
         cout << go(1, k) << endl;
     }
-
     return 0;
 }
