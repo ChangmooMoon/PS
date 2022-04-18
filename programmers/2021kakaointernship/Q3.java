@@ -2,19 +2,21 @@ import java.util.*;
 
 class Solution {
     public String solution(int n, int k, String[] cmd) {
+        Node head = null;
+        Node tail = null;
+        Node cursor = null;
         Stack<Node> st = new Stack<>();
-        LinkedList list = new LinkedList();
 
         for (int i = 0; i < n; ++i) {
-            if (list.head == null) {
-                list.head = new Node(i, null, null);
-                list.tail = list.head;
+            if (head == null) {
+                head = new Node(i, null, null);
+                tail = head;
             } else {
-                list.tail.next = new Node(i, list.tail, null);
-                list.tail = list.tail.next;
+                tail.next = new Node(i, tail, null);
+                tail = tail.next;
             }
             if (i == k)
-                list.cursor = list.tail;
+                cursor = tail;
         }
 
         for (String c : cmd) {
@@ -24,25 +26,25 @@ class Solution {
                 int jump = Integer.parseInt(c.substring(2));
 
                 if (ch == 'U') {
-                    while (jump-- > 0 && list.cursor.prev != null) {
-                        list.cursor = list.cursor.prev;
+                    while (jump-- > 0 && cursor.prev != null) {
+                        cursor = cursor.prev;
                     }
                 } else if (ch == 'D') {
-                    while (jump-- > 0 && list.cursor.next != null) {
-                        list.cursor = list.cursor.next;
+                    while (jump-- > 0 && cursor.next != null) {
+                        cursor = cursor.next;
                     }
                 }
             } else if (ch == 'C') { // 선택행 삭제, 바로 아래행 선택, 삭제된 행이 tail이면 윗행 선택
-                st.push(list.cursor);
-                if (list.tail == list.cursor) { // tail이면
-                    list.tail = list.tail.prev;
-                    list.tail.next = null;
-                    list.cursor = list.tail;
+                st.push(cursor);
+                if (tail == cursor) { // tail이면
+                    tail = tail.prev;
+                    tail.next = null;
+                    cursor = tail;
                 } else { // tail 아니면
-                    if (list.cursor.prev != null)
-                        list.cursor.prev.next = list.cursor.next;
-                    list.cursor.next.prev = list.cursor.prev;
-                    list.cursor = list.cursor.next;
+                    if (cursor.prev != null)
+                        cursor.prev.next = cursor.next;
+                    cursor.next.prev = cursor.prev;
+                    cursor = cursor.next;
                 }
             } else if (ch == 'Z') { // 가장 최근 삭제행 복구
                 Node node = st.pop();
@@ -50,33 +52,22 @@ class Solution {
                 if (node.prev != null)
                     node.prev.next = node;
                 else
-                    list.head = node;
+                    head = node;
 
                 if (node.next != null)
                     node.next.prev = node;
                 else
-                    list.tail = node;
+                    tail = node;
             }
         }
 
         StringBuilder sb = new StringBuilder("O".repeat(n));
         while (!st.isEmpty()) {
             Node cur = st.pop();
-            sb.replace(cur.idx, cur.idx + 1, "X");
+            sb.setCharAt(cur.idx, 'X');
         }
 
         return sb.toString();
-    }
-
-    class LinkedList {
-        Node head;
-        Node tail;
-        Node cursor;
-
-        LinkedList() {
-            this.head = null;
-            this.tail = null;
-        }
     }
 
     class Node {
