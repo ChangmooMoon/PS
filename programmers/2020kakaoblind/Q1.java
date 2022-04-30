@@ -1,29 +1,44 @@
 class Solution {
     public int solution(String s) {
-        if(s.length() == 1) return 1;
+        int ans = s.length();
 
-            int answer = 1001;
-            for (int i = 1; i <= s.length() / 2; i++) {
-                String now, cut = "", result = "";
-                int match = 1;
-                
-                for (int j = 0; j <= s.length() / i; j++) {
-                    int start = j * i;
-                    int end = i * (j + 1) > s.length() ? s.length() : i * (j + 1);
-                    now = cut;
-                    cut = s.substring(start, end);
+        for (int i = 1; i <= s.length() / 2; ++i) {
+            int len = go(s, i);
+            if (ans > len)
+                ans = len;
+        }
 
-                    if(now.equals(cut)) {
-                        ++match;
-                    } else {
-                        result += (match > 1 ? Integer.toString(match): "") + now;
-                        match = 1;
-                    }
-                }
-                result += (match > 1 ? Integer.toString(match) : "") + cut;
-                answer = Math.min(answer, result.length());
+        return ans;
+    }
+
+    int go(String s, int len) {
+        String substr = s.substring(0, len);
+        String tmp = "";
+        String result = "";
+        int cnt = 1;
+
+        for (int i = len; i < s.length(); i += len) {
+            if (i + len > s.length())
+                tmp = s.substring(i, s.length());
+            else
+                tmp = s.substring(i, i + len);
+
+            if (substr.equals(tmp)) {
+                ++cnt;
+            } else {
+                if (cnt >= 2)
+                    result += Integer.toString(cnt);
+                result += substr;
+
+                substr = tmp;
+                cnt = 1;
             }
+        }
 
-            return answer;
-     }
+        if (cnt >= 2)
+            result += Integer.toString(cnt);
+        result += substr;
+
+        return result.length();
+    }
 }
