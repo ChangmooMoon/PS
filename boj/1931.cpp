@@ -1,38 +1,31 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
-#define pii pair<int, int>
+#include <bits/stdc++.h>
 using namespace std;
-
-bool cmp(pii& a, pii& b) {  // 1. 끝 오름차순 2. 시작 오름차순
-    if (a.second == b.second) {
-        return a.first < b.first;
-    }
-    return a.second < b.second;
-}
+#define endl '\n'
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+// 회의실 배정
+int n;
+vector<pair<int, int>> v;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    int n;
+    FASTIO;
     cin >> n;
-    vector<pii> v;
     for (int i = 0; i < n; ++i) {
-        int x, y;
-        cin >> x >> y;
-        v.push_back({x, y});
+        int from, to;
+        cin >> from >> to;
+        v.push_back({to, from});
     }
 
-    sort(v.begin(), v.end(), cmp);
+    sort(v.begin(), v.end());
+    for (int i = 0; i < n; ++i) {
+        const auto &[to, from] = v[i];
+        cout << from << ' ' << to << endl;
+    }
 
-    int cnt = 0;
-    int end = 0;
-    for (int i = 0; i < v.size(); ++i) {
-        if (end <= v[i].first) {
-            cnt++;
-            end = v[i].second;
+    int cnt = 0, e = 0;
+    for (int i = 0; i < n; ++i) {
+        if (e <= v[i].second) {
+            ++cnt;
+            e = v[i].first;
         }
     }
 
