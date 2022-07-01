@@ -23,9 +23,11 @@ int main() {
     cin >> n >> m;
     for (int i = 1; i <= n; ++i) {
         cin >> a[i];
-        psum[i] = psum[i - 1] + a[i];
+   j   psum[i] = psum[i - 1] + a[i];
     }
     memset(d, -1, sizeof(d));
     cout << go(n, m);
     return 0;
 }
+
+alksjdfkladsjfkladsckdanalkdjsfklajsdfkljasdlfkjdsalfkjdsakljlkjkjj
