@@ -1,14 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define endl '\n'
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+#define INF 0x3f3f3f3f
+
+
 
 int main() {
-    multiset<int> mset;
-    mset.insert(1);
-    mset.insert(2);
-    mset.insert(0);
-    priority_queue<int> pq;
-    pq.
+    FASTIO;
 
-    cout << *mset.begin() << endl;  // 0
-    cout << *mset.rbegin() << endl  // 2
+    
+
+    return 0;
 }
