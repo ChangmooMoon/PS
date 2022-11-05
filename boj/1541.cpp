@@ -1,50 +1,42 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-// 수식 변환 문제
-// -가 나올때 그 뒤의 +값들을 전부 묶으면 최소가 됨
-char op[2] = {'+', '-'};
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+
+string s;
+vector<int> num, num2;
+vector<char> op;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
+	FASTIO;
+	cin >> s;
 
-    string s;
-    cin >> s;
+	int curr = 0;
+	for(char ch: s) {
+		if('0' <= ch && ch <= '9') curr = curr * 10 + (ch - '0');
+		else {
+			op.push_back(ch); // +, -
+			num.push_back(curr); // 피연산자
+			curr = 0;
+		}
+	}
+	num.push_back(curr);
+	
+	num2.push_back(num[0]);
+	int p = 0;
+	for(int i = 0; i < op.size(); ++i) {
+		if(op[i] == '+') {
+			num2[p] += num[i + 1];
+		} else {
+			++p;
+			num2.push_back(num[i + 1]);
+		}
+	}
 
-    vector<int> digit;
-    vector<int> op;
-    bool minus = false;
-
-    int num = 0;
-    op.push_back(1);
-    for (char ch : s) {
-        if (ch == '+' || ch == '-') {
-            if (ch == '+')
-                op.push_back(1);
-            else
-                op.push_back(-1);
-
-            digit.push_back(num);
-            num = 0;
-        } else {
-            num = num * 10 + (ch - '0');
-        }
-    }
-    digit.push_back(num);
-
-    int ans = 0;
-    for (int i = 0; i < digit.size(); ++i) {
-        if (op[i] == -1) minus = true;
-
-        if (minus)
-            ans -= digit[i];
-        else
-            ans += digit[i];
-    }
-
-    cout << ans;
-    return 0;
+	int ans = num2[0];
+	for(int i = 1; i < num2.size(); ++i) {
+		ans -= num2[i];
+	}
+	
+	cout << ans;
+	return 0;
 }

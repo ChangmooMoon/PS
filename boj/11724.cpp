@@ -1,42 +1,35 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
 
-int n, m;  // node 1000, edge 1,000,000
+int n, m, u, v, cnt;
 vector<int> a[1001];
-vector<int> check(1001);
-int ans = 0;
+bool visited[1001];
 
-void dfs(int x) {
-    check[x] = 1;
-    for (int i = 0; i < a[x].size(); ++i) {
-        int y = a[x][i];
-        if (!check[y]) {
-            dfs(y);
-        }
+void dfs(int curr) {
+    if(visited[curr]) return;
+    visited[curr] = true;
+
+    for(int next: a[curr]) {
+        dfs(next);
     }
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
+    FASTIO;
     cin >> n >> m;
-    for (int i = 1; i <= m; ++i) {
-        int u, v;
+    for(int i = 0; i < m; ++i) {
         cin >> u >> v;
-        a[u].emplace_back(v);
-        a[v].emplace_back(u);
+        a[u].push_back(v);
+        a[v].push_back(u);
     }
 
-    for (int i = 1; i <= n; ++i) {
-        if (!check[i]) {
-            dfs(i);
-            ans++;
-        }
+    for(int i = 1; i <= n; ++i) {
+        if(visited[i]) continue;
+        dfs(i);
+        ++cnt;
     }
-    cout << ans;
 
+    cout << cnt;
     return 0;
 }
