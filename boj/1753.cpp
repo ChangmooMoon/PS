@@ -1,60 +1,53 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+#define endl '\n'
+#define FASTIO cin.tie(nullptr)->sync_with_stdio(false)
+#define INF 0x3f3f3f3f
 
-#define INF 987654321
-#define pii pair<int, int>
+const int MAX_V = 20000;
 
-// 최단경로 - 다익스트라 NlogN으로 푸는 방식(우선순위큐)
-// 다익스트라
-// 1. 검사하지 않은 정점 중에서 dist의 값이 가장 작은
-
-struct Edge {
-    int to, weight;
-};
-
-int n, m, start;
-vector<Edge> a[300001];
-vector<int> dist(20001, INF);
-vector<bool> check(20001);
+int V, E, K;
+int d[MAX_V + 1];
+bool visited[MAX_V];
+vector<pair<int, int>> a[20001];
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    cin >> n >> m >> start;
-    for (int i = 0; i < m; ++i) {
-        int x, y, w;
-        cin >> x >> y >> w;
-        a[x].push_back({y, w});
+    FASTIO;
+    cin >> V >> E >> K;
+    for (int i = 0; i < E; ++i) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        a[u].push_back({v, w});
     }
 
-    dist[start] = 0;
-    priority_queue<pii, vector<pii>, greater<>> pq;
-    pq.push({dist[start], start});
+    for (int i = 1; i <= V; ++i) {
+        d[i] = INF;
+    }
+
+    d[K] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+    pq.push({d[K], K});
 
     while (!pq.empty()) {
-        int x = pq.top().second;
+        auto [w, curr] = pq.top();
         pq.pop();
 
-        if (check[x]) continue;
-        check[x] = true;
-        for (int i = 0; i < a[x].size(); ++i) {
-            int y = a[x][i].to;
-            if (dist[y] > dist[x] + a[x][i].weight) {
-                dist[y] = dist[x] + a[x][i].weight;
-                pq.push({dist[y], y});
+        if (visited[curr]) continue;
+        visited[curr] = true;
+
+        for (auto [next, nw] : a[curr]) {
+            if (d[next] > d[curr] + nw) {
+                d[next] = d[curr] + nw;
+                pq.push({d[next], next});
             }
         }
     }
 
-    for (int i = 1; i <= n; ++i) {
-        if (dist[i] >= INF)
-            cout << "INF" << ' ';
+    for (int i = 1; i <= V; ++i) {
+        if (d[i] == INF)
+            cout << "INF" << endl;
         else
-            cout << dist[i] << ' ';
+            cout << d[i] << endl;
     }
 
     return 0;
