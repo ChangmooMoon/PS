@@ -62,17 +62,6 @@ void simulate(vector<vector<int>> a, int cnt) {
 
         down(b);
 
-        if (dir == 0) {
-            rotate(b);
-            rotate(b);
-            rotate(b);
-        } else if (dir == 2) {
-            rotate(b);
-        } else if (dir == 3) {
-            rotate(b);
-            rotate(b);
-        }
-
         simulate(b, cnt + 1);
     }
 }
