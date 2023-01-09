@@ -8,7 +8,7 @@ visited = [False] * 9
 
 def dfs(curr):
     if curr == M:
-        for num in list:
+        for num in list:  # print(*list)
             print(num, end=" ")
         print()
         return
