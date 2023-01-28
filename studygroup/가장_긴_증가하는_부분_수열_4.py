@@ -3,14 +3,24 @@ si = sys.stdin.readline
 
 N = int(si())
 a = list(map(int, si().split()))
-d = [0] * 1001
+d = [1 for _ in range(N)]
+prev = [-1] * N
+LIS = []
 
 for i in range(N):
-    d[i] = 1
-    for j in range(i):
+    for j in range(0, i):
         if a[j] < a[i] and d[i] < d[j] + 1:
             d[i] = d[j] + 1
+            prev[i] = j
+
 print(max(d))
+
+idx = d.index(max(d))
+while idx != -1:
+    LIS.append(a[idx])
+    idx = prev[idx]
+
+print(*LIS[::-1])
 
 '''
 1. 문제 읽기
@@ -20,11 +30,12 @@ print(max(d))
 5. 구현
 6. 엣지케이스
 
-1. 가장 긴 증가하는 부분수열 LIS 길이 찾기
-N 1~1000, N^3 = 1억 까지 가능
+1. 수열의 LIS 길이, 그 부분수열 출력
+N 1000이라 N^3 까지 가능
 
-2. 
-d[i] = a[1] ~ a[i]를 마지막으로 하는 LIS length
+2. d[i] = a[i]를 마지막으로 하는 LIS 최대길이
+
 d[i] = max(d[j]) + 1, j <i, a[j] < a[i]
-d[1] = 1
+
+
 '''
