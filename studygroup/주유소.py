@@ -8,11 +8,9 @@ price = list(map(int, si().split()))  # 주유소 리터당가격
 ans = dist[0] * price[0]
 p = 0  # 주유를 하는 지점
 for i in range(1, N - 1):
-    if price[p] < price[i]:
-        ans += price[p] * dist[i]
-    else:
+    if price[p] >= price[i]:
         p = i
-        ans += price[p] * dist[i]
+    ans += price[p] * dist[i]
 print(ans)
 
 '''
