@@ -32,8 +32,9 @@ for _ in range(E):
 mid1, mid2 = map(int, si().split())
 ans = INF
 
-path1 = dijk(1, mid1) + dijk(mid1, mid2) + dijk(mid2, V)
-path2 = dijk(1, mid2) + dijk(mid2, mid1) + dijk(mid1, V)
+mid = dijk(mid1, mid2)
+path1 = dijk(1, mid1) + mid + dijk(mid2, V)
+path2 = dijk(1, mid2) + mid + dijk(mid1, V)
 ans = min(ans, path1, path2)
 
 print(-1 if ans >= INF else ans)
